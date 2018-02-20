@@ -10,26 +10,36 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using RoomBookingSystem.DAL.Context;
 
-namespace RoomBookingSystem
+namespace RoomBookingSystem.API
 {
     public class Startup
     {
+        private readonly IConfiguration _config;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _config = configuration;
         }
-
-        public IConfiguration Configuration { get; }
+        
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(_config);
+
+            services.AddDbContext<BookingContext>(options =>
+            {
+                options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
+            });
+
             services.AddAuthentication(sharedOptions =>
             {
                 sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddAzureAdB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
+            .AddAzureAdB2CBearer(options => _config.Bind("AzureAdB2C", options));
 
             services.AddMvc();
         }
