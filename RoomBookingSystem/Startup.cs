@@ -11,7 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using RoomBookingSystem.Business.Bookings;
+using RoomBookingSystem.Business.IDAL;
 using RoomBookingSystem.DAL.Context;
+using RoomBookingSystem.DAL.Repository;
 
 namespace RoomBookingSystem.API
 {
@@ -35,6 +38,8 @@ namespace RoomBookingSystem.API
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddScoped<IBookingRepository, BookingRepository>();
+
             services.AddAuthentication(sharedOptions =>
             {
                 sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -44,6 +49,8 @@ namespace RoomBookingSystem.API
             services.AddLogging();
 
             services.AddMvc();
+
+            services.AddScoped<IBookingManager, BookingManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

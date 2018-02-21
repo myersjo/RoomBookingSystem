@@ -7,6 +7,7 @@ using RoomBookingSystem.Business.Entities;
 
 namespace RoomBookingSystem.Business.Bookings
 {
+    /** Business logic for managing bookings */
     public class BookingManager : IBookingManager
     {
         private IBookingRepository _repo;
