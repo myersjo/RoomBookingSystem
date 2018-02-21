@@ -10,7 +10,7 @@ using System;
 
 namespace RoomBookingSystem.DAL.Migrations
 {
-    [DbContext(typeof(BookingContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class BookingContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

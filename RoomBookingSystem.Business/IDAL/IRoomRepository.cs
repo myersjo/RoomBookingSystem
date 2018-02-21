@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using RoomBookingSystem.Business.Entities;
 
 namespace RoomBookingSystem.Business.IDAL
 {
-    public interface IBookingRepository
+    public interface IRoomRepository
     {
-        void CreateBookingAsync(Booking booking);
-
+        Task<ICollection<Room>> GetAllRoomsAsync();
     }
 }

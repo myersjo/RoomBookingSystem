@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using RoomBookingSystem.Business.Bookings;
+using RoomBookingSystem.Business.Entities;
 
 namespace RoomBookingSystem.API.Controllers
 {
@@ -11,6 +14,15 @@ namespace RoomBookingSystem.API.Controllers
     [Route("api/Booking")]
     public class BookingController : Controller
     {
+        private IBookingManager _bookingManager;
+        private ILogger<BookingController> _logger;
+
+        public BookingController(IBookingManager bookingManager,
+                                    ILoggerFactory loggerFactory)
+        {
+            _bookingManager = bookingManager;
+            _logger = loggerFactory.CreateLogger<BookingController>();
+        }
         // GET: api/Booking
         [HttpGet]
         public IEnumerable<string> Get()
@@ -27,8 +39,10 @@ namespace RoomBookingSystem.API.Controllers
         
         // POST: api/Booking
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]Booking request)
         {
+            var booking = _bookingManager.CreateBooking(request);
+            return CreatedAtAction("Get", new { id = booking.BookingReference }, booking);
         }
         
         // PUT: api/Booking/5

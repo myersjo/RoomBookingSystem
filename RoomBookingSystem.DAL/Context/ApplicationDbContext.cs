@@ -6,9 +6,9 @@ using RoomBookingSystem.Business.Entities;
 
 namespace RoomBookingSystem.DAL.Context
 {
-    public class BookingContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public BookingContext(DbContextOptions<BookingContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
             
         }

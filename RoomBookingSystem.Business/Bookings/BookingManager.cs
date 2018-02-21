@@ -10,17 +10,26 @@ namespace RoomBookingSystem.Business.Bookings
     /** Business logic for managing bookings */
     public class BookingManager : IBookingManager
     {
-        private IBookingRepository _repo;
+        private IBookingRepository _bookingRepo;
         private ILogger<BookingManager> _logger;
+        private IRoomRepository _roomRepo;
 
-        public BookingManager(IBookingRepository repo, ILoggerFactory loggerFactory)
+        public BookingManager(IBookingRepository bookingRepo, 
+                                IRoomRepository roomRepo,
+                                ILoggerFactory loggerFactory)
         {
-            _repo = repo;
+            _bookingRepo = bookingRepo;
+            _roomRepo = roomRepo;
             _logger = loggerFactory.CreateLogger<BookingManager>();
         }
 
         public Booking CreateBooking(Booking request)
         {
+            // Find a suitable free room
+            var rooms = _roomRepo.GetAllRoomsAsync();
+            // Generate a booking reference
+            // Create booking
+            // Send response
             throw new NotImplementedException();
         }
 

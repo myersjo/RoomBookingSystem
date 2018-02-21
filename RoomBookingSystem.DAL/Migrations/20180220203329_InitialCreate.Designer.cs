@@ -10,7 +10,7 @@ using System;
 
 namespace RoomBookingSystem.DAL.Migrations
 {
-    [DbContext(typeof(BookingContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20180220203329_InitialCreate")]
     partial class InitialCreate
     {
