@@ -41,6 +41,8 @@ namespace RoomBookingSystem.API
             })
             .AddAzureAdB2CBearer(options => _config.Bind("AzureAdB2C", options));
 
+            services.AddLogging();
+
             services.AddMvc();
         }
 
