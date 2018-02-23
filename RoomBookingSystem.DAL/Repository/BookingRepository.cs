@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RoomBookingSystem.Business.Entities;
 using RoomBookingSystem.Business.IDAL;
@@ -23,6 +26,12 @@ namespace RoomBookingSystem.DAL.Repository
         {
             await _context.Bookings.AddAsync(booking);
             await _context.SaveChangesAsync();
+        }
+
+        /** Returns all bookings for room id sorted by startTime */
+        public async Task<ICollection<Booking>> GetAllBookingsForRoom(string id)
+        {
+            return await _context.Bookings.Where(x => x.RoomId == id).OrderBy(t => t.StartTime).ToListAsync();
         }
     }
 }

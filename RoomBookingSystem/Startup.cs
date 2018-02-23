@@ -62,6 +62,7 @@ namespace RoomBookingSystem.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStatusCodePages();
             app.UseAuthentication();
             app.UseMvc();
         }

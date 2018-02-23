@@ -39,9 +39,14 @@ namespace RoomBookingSystem.API.Controllers
         
         // POST: api/Booking
         [HttpPost]
-        public IActionResult Post([FromBody]Booking request)
+        public async Task<IActionResult> Post([FromBody]Booking request)
         {
-            var booking = _bookingManager.CreateBooking(request);
+            var booking = await _bookingManager.CreateBookingAsync(request);
+            if (booking == null)
+            {
+                return 
+            }
+            //return Ok();
             return CreatedAtAction("Get", new { id = booking.BookingReference }, booking);
         }
         
