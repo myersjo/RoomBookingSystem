@@ -27,9 +27,9 @@ namespace RoomBookingSystem.Business.Bookings
 
         public async Task<Booking> CreateBookingAsync(Booking request)
         {
-            request.BookingCreated = DateTime.Now;
             // Find a suitable free room
-            var rooms = await _roomRepo.GetAllRoomsAsync();
+            //var rooms = await _roomRepo.GetAllRoomsAsync();
+            var rooms = await _roomRepo.GetAllRoomsWithCapacity(request.RequiredCapacity);
             foreach (var room in rooms)
             {
                 var bookings = await _bookingRepo.GetAllBookingsForRoom(room.ID);
@@ -37,7 +37,7 @@ namespace RoomBookingSystem.Business.Bookings
                 {
                     request.Room = room;
                     request.RoomId = room.ID;
-                    // TODO: add room name
+                    request.Room.Location = await _roomRepo.GetLocationByRoomId(room.ID);
                     break; // free room found
                 }
             }
@@ -53,6 +53,7 @@ namespace RoomBookingSystem.Business.Bookings
             try
             {
                 _bookingRepo.CreateBookingAsync(request);
+                request.BookingCreated = DateTime.Now;
             }
             catch (Exception ex)
             {
@@ -91,10 +92,10 @@ namespace RoomBookingSystem.Business.Bookings
             foreach (var booking in bookings)
             {
                 // booking starts between requested startTime and endTime
-                if (booking.StartTime >= startTime && booking.StartTime <= endTime)
+                if (booking.StartTime >= startTime && booking.StartTime < endTime)
                     return false;
                 // booking ends between requested startTime and endTime
-                else if (booking.EndTime >= startTime && booking.EndTime <= endTime)
+                else if (booking.EndTime > startTime && booking.EndTime <= endTime)
                     return false;
 
             }

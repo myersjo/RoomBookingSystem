@@ -45,7 +45,7 @@ namespace RoomBookingSystem.API.Controllers
             var booking = await _bookingManager.CreateBookingAsync(request);
             if (booking == null)
             {
-                return new OkObjectResult(new { Status = "notCreated", Reason = "noFreeRoom" });
+                return new OkObjectResult(new { Status = "notCreated", Reason = "noSuitableFreeRoom" });
             }
             //return Ok();
             return CreatedAtAction("Get", new { id = booking.BookingReference }, booking);
