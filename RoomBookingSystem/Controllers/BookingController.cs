@@ -41,10 +41,11 @@ namespace RoomBookingSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Booking request)
         {
+            request.UserId = User.FindFirst("emails")?.Value;
             var booking = await _bookingManager.CreateBookingAsync(request);
             if (booking == null)
             {
-                //return 
+                return new OkObjectResult(new { Status = "notCreated", Reason = "noFreeRoom" });
             }
             //return Ok();
             return CreatedAtAction("Get", new { id = booking.BookingReference }, booking);

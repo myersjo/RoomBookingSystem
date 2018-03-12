@@ -27,6 +27,7 @@ namespace RoomBookingSystem.Business.Bookings
 
         public async Task<Booking> CreateBookingAsync(Booking request)
         {
+            request.BookingCreated = DateTime.Now;
             // Find a suitable free room
             var rooms = await _roomRepo.GetAllRoomsAsync();
             foreach (var room in rooms)
@@ -36,6 +37,7 @@ namespace RoomBookingSystem.Business.Bookings
                 {
                     request.Room = room;
                     request.RoomId = room.ID;
+                    // TODO: add room name
                     break; // free room found
                 }
             }
