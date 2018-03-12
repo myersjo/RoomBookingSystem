@@ -44,7 +44,7 @@ namespace RoomBookingSystem.API.Controllers
             var booking = await _bookingManager.CreateBookingAsync(request);
             if (booking == null)
             {
-                return 
+                //return 
             }
             //return Ok();
             return CreatedAtAction("Get", new { id = booking.BookingReference }, booking);
