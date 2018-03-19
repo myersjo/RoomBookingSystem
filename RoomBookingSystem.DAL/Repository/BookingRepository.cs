@@ -33,5 +33,15 @@ namespace RoomBookingSystem.DAL.Repository
         {
             return await _context.Bookings.Where(x => x.RoomId == id).OrderBy(t => t.StartTime).ToListAsync();
         }
+
+        public async Task<ICollection<Booking>> GetAllBookingsForUser(string id)
+        {
+            return await _context.Bookings
+                .Where(x => x.UserId == id)
+                .OrderBy(t => t.StartTime)
+                .Include(booking => booking.Room)
+                .Include(booking => booking.Room.Location)
+                .ToListAsync();
+        }
     }
 }

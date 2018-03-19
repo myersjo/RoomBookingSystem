@@ -25,9 +25,15 @@ namespace RoomBookingSystem.API.Controllers
         }
         // GET: api/Booking
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var id = User.FindFirst("emails")?.Value;
+            if (id == null)
+            {
+                return Unauthorized();
+            }
+            var bookings = await _bookingManager.GetAllBookingsForUser(id);
+            return Ok(bookings);
         }
 
         // GET: api/Booking/5

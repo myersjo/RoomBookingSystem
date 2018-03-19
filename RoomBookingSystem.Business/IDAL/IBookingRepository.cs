@@ -10,5 +10,6 @@ namespace RoomBookingSystem.Business.IDAL
     {
         void CreateBookingAsync(Booking booking);
         Task<ICollection<Booking>> GetAllBookingsForRoom(string id);
+        Task<ICollection<Booking>> GetAllBookingsForUser(string id);
     }
 }

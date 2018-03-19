@@ -69,9 +69,9 @@ namespace RoomBookingSystem.Business.Bookings
             throw new NotImplementedException();
         }
 
-        public ICollection<Booking> GetAllBookingsForUser(string userId)
+        public async Task<ICollection<Booking>> GetAllBookingsForUser(string userId)
         {
-            throw new NotImplementedException();
+            return await _bookingRepo.GetAllBookingsForUser(userId);
         }
 
         public Booking UpdateBooking(Booking booking)

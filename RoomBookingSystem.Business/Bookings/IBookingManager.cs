@@ -14,7 +14,7 @@ namespace RoomBookingSystem.Business.Bookings
         /** Get a booking using the details in booking */
         Booking GetBooking(Booking booking);
         /** Get all bookings for the given user */
-        ICollection<Booking> GetAllBookingsForUser(string userId);
+        Task<ICollection<Booking>> GetAllBookingsForUser(string userId);
 
         /** Update booking and return the update booking */
         Booking UpdateBooking(Booking booking);
