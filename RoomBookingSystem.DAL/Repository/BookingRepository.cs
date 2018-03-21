@@ -28,6 +28,11 @@ namespace RoomBookingSystem.DAL.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task<Booking> GetBooking(int reference)
+        {
+            return await _context.Bookings.SingleOrDefaultAsync(b => b.BookingReference == reference);
+        }
+
         /** Returns all bookings for room id sorted by startTime */
         public async Task<ICollection<Booking>> GetAllBookingsForRoom(string id)
         {
@@ -42,6 +47,16 @@ namespace RoomBookingSystem.DAL.Repository
                 .Include(booking => booking.Room)
                 .Include(booking => booking.Room.Location)
                 .ToListAsync();
+        }
+
+        public void DeleteBooking(Booking booking)
+        {
+            _context.Bookings.Remove(booking);
+        }
+
+        public async void SaveChanges()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

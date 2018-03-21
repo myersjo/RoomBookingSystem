@@ -63,10 +63,11 @@ namespace RoomBookingSystem.API.Controllers
         {
         }
         
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Booking/id
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _bookingManager.DeleteBooking(id);
         }
     }
 }

@@ -53,12 +53,12 @@ namespace RoomBookingSystem.Business.Bookings
             try
             {
                 _bookingRepo.CreateBookingAsync(request);
+                _bookingRepo.SaveChanges();
                 request.BookingCreated = DateTime.Now;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-
             }
             // Send response
             return request;
@@ -69,9 +69,18 @@ namespace RoomBookingSystem.Business.Bookings
             throw new NotImplementedException();
         }
 
+        /** Returns all bookings for the given userId or null if there is an error */
         public async Task<ICollection<Booking>> GetAllBookingsForUser(string userId)
         {
-            return await _bookingRepo.GetAllBookingsForUser(userId);
+            try
+            {
+                return await _bookingRepo.GetAllBookingsForUser(userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return null;
+            }
         }
 
         public Booking UpdateBooking(Booking booking)
@@ -79,9 +88,18 @@ namespace RoomBookingSystem.Business.Bookings
             throw new NotImplementedException();
         }
 
-        public int DeleteBooking(Booking booking)
+        public async void DeleteBooking(int reference)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var booking = await _bookingRepo.GetBooking(reference);
+                _bookingRepo.DeleteBooking(booking);
+                _bookingRepo.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         #region Helpers

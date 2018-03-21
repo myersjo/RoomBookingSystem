@@ -19,7 +19,7 @@ namespace RoomBookingSystem.Business.Bookings
         /** Update booking and return the update booking */
         Booking UpdateBooking(Booking booking);
 
-        /** Delete booking and return the booking reference if successful, -1 if not */
-        int DeleteBooking(Booking booking);
+        /** Delete booking booking */
+        void DeleteBooking(int reference);
     }
 }
