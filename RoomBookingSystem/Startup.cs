@@ -33,12 +33,13 @@ namespace RoomBookingSystem.API
         {
             services.AddSingleton(_config);
 
-            services.AddDbContext<BookingContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
 
             services.AddScoped<IBookingRepository, BookingRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
 
             services.AddAuthentication(sharedOptions =>
             {
@@ -61,6 +62,7 @@ namespace RoomBookingSystem.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStatusCodePages();
             app.UseAuthentication();
             app.UseMvc();
         }

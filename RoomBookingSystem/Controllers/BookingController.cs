@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using RoomBookingSystem.Business.Bookings;
+using RoomBookingSystem.Business.Entities;
 
 namespace RoomBookingSystem.API.Controllers
 {
@@ -11,11 +14,26 @@ namespace RoomBookingSystem.API.Controllers
     [Route("api/Booking")]
     public class BookingController : Controller
     {
+        private IBookingManager _bookingManager;
+        private ILogger<BookingController> _logger;
+
+        public BookingController(IBookingManager bookingManager,
+                                    ILoggerFactory loggerFactory)
+        {
+            _bookingManager = bookingManager;
+            _logger = loggerFactory.CreateLogger<BookingController>();
+        }
         // GET: api/Booking
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var id = User.FindFirst("emails")?.Value;
+            if (id == null)
+            {
+                return Unauthorized();
+            }
+            var bookings = await _bookingManager.GetAllBookingsForUser(id);
+            return Ok(bookings);
         }
 
         // GET: api/Booking/5
@@ -27,8 +45,16 @@ namespace RoomBookingSystem.API.Controllers
         
         // POST: api/Booking
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> Post([FromBody]Booking request)
         {
+            request.UserId = User.FindFirst("emails")?.Value;
+            var booking = await _bookingManager.CreateBookingAsync(request);
+            if (booking == null)
+            {
+                return new OkObjectResult(new { Status = "notCreated", Reason = "noSuitableFreeRoom" });
+            }
+            //return Ok();
+            return CreatedAtAction("Get", new { id = booking.BookingReference }, booking);
         }
         
         // PUT: api/Booking/5
@@ -37,10 +63,11 @@ namespace RoomBookingSystem.API.Controllers
         {
         }
         
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Booking/id
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _bookingManager.DeleteBooking(id);
         }
     }
 }

@@ -17,7 +17,8 @@ namespace RoomBookingSystem.API.Controllers
         {
             var un = (User.FindFirst("emails")?.Value);
             var name = User.FindFirst("surname")?.Value;
-            return new string[] { "value1", "value2", "test", un, name};
+            //return new string[] { "value1", "value2", "test", un, name};
+            return new string[] { un };
         }
 
         // GET api/values/5
