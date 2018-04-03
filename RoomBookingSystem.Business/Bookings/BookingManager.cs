@@ -52,9 +52,9 @@ namespace RoomBookingSystem.Business.Bookings
             // Create booking
             try
             {
+                request.BookingCreated = DateTime.Now;
                 _bookingRepo.CreateBookingAsync(request);
                 _bookingRepo.SaveChanges();
-                request.BookingCreated = DateTime.Now;
             }
             catch (Exception ex)
             {

@@ -25,7 +25,6 @@ namespace RoomBookingSystem.DAL.Repository
         public async void CreateBookingAsync(Booking booking)
         {
             await _context.Bookings.AddAsync(booking);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<Booking> GetBooking(int reference)
@@ -42,7 +41,7 @@ namespace RoomBookingSystem.DAL.Repository
         public async Task<ICollection<Booking>> GetAllBookingsForUser(string id)
         {
             return await _context.Bookings
-                .Where(x => x.UserId == id && x.StartTime > DateTime.Now)
+                .Where(x => x.UserId == id && x.EndTime > DateTime.Now)
                 .OrderBy(t => t.StartTime)
                 .Include(booking => booking.Room)
                 .Include(booking => booking.Room.Location)
