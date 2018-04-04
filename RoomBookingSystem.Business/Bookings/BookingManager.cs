@@ -63,12 +63,7 @@ namespace RoomBookingSystem.Business.Bookings
             // Send response
             return request;
         }
-
-        public Booking GetBooking(Booking booking)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         /** Returns all bookings for the given userId or null if there is an error */
         public async Task<ICollection<Booking>> GetAllBookingsForUser(string userId)
         {
@@ -82,24 +77,24 @@ namespace RoomBookingSystem.Business.Bookings
                 return null;
             }
         }
-
-        public Booking UpdateBooking(Booking booking)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async void DeleteBooking(int reference)
+        
+        /** Deletes the booking with booking reference reference. Returns true if successful, else false */
+        public async Task<bool> DeleteBooking(int reference)
         {
             try
             {
                 var booking = await _bookingRepo.GetBooking(reference);
+                if (booking == null)
+                    return false;
                 _bookingRepo.DeleteBooking(booking);
                 _bookingRepo.SaveChanges();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
+                return false;
             }
+            return true;
         }
 
         #region Helpers

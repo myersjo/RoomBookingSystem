@@ -35,13 +35,6 @@ namespace RoomBookingSystem.API.Controllers
             var bookings = await _bookingManager.GetAllBookingsForUser(id);
             return Ok(bookings);
         }
-
-        // GET: api/Booking/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
         
         // POST: api/Booking
         [HttpPost]
@@ -54,20 +47,26 @@ namespace RoomBookingSystem.API.Controllers
                 return new OkObjectResult(new { Status = "notCreated", Reason = "noSuitableFreeRoom" });
             }
             //return Ok();
-            return CreatedAtAction("Get", new { id = booking.BookingReference }, booking);
-        }
-        
-        // PUT: api/Booking/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
+            return CreatedAtAction("Get", booking);
         }
         
         // DELETE: api/Booking/id
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _bookingManager.DeleteBooking(id);
+            try
+            {
+                var success = await _bookingManager.DeleteBooking(id);
+                if (success)
+                    return Ok();
+                else
+                    return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return new StatusCodeResult(500);
+            }
         }
     }
 }
